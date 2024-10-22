@@ -6,4 +6,5 @@ app.secret_key = 'supersecretkey'
 
 
 
-
+if __name__ == '__main__':
+    app.run(debug=True)
