@@ -20,4 +20,12 @@ class Budget:
         total_expenses = sum(item['amount'] for item in self.expenses)
         return total_income - total_expenses
     
-    
+    def generate_report(self):
+        report = {
+            'budget_name': self.name,
+            'total_amount': self.total_amount,
+            'income': self.income,
+            'expenses': self.expenses,
+            'savings': self.calculate_savings()
+        }
+        return report
