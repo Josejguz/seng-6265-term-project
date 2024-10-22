@@ -7,4 +7,8 @@ class Budget:
         self.income = []
         self.expenses = []
 
-  
+    def add_income(self, source, amount):
+        self.income.append({'source': source, 'amount': amount})
+        self.total_amount += amount
+
+    
