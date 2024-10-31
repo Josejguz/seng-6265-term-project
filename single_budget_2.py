@@ -6,8 +6,12 @@ Created on Mon Oct 21 18:23:29 2024
 """
 
 class Budget:
-    def __init__(self):
+    def __init__(self, name):
         
+        #Initializes name of budget
+        
+        self.name = name
+
         # Initialize empty lists for income and expenses
         
         self.incomes = []
