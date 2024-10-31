@@ -49,19 +49,22 @@
             <button type="submit">Add Expense</button>
         </form>
 
-        <!-- List of incomes -->
-        <h5>Incomes</h5>
-        <ul>
-            {% for income in budget.incomes %}
-            <li>{{ income.source }}: ${{ income.amount }}
-                <form action="/delete_income" method="post" style="display:inline;">
-                    <input type="hidden" name="budget_name" value="{{ budget.name }}">
-                    <input type="hidden" name="income_source" value="{{ income.source }}">
-                    <button type="submit">Delete</button>
-                </form>
-            </li>
-            {% endfor %}
-        </ul>
+       <!-- List of incomes -->
+<h5>Incomes</h5>
+<ul>
+    {% for income in budget.incomes %}
+    <li>
+        {{ income.source }}: ${{ income.amount }}
+        <form action="/delete_income" method="post" style="display:inline;">
+            <input type="hidden" name="budget_name" value="{{ budget.name }}">
+            <input type="hidden" name="income_source" value="{{ income.source }}">
+            <input type="hidden" name="income_amount" value="{{ income.amount }}">
+            <button type="submit" class="delete">Delete</button>
+        </form>
+    </li>
+    {% endfor %}
+</ul>
+
 
         <!-- List of expenses by category -->
         <h5>Expenses by Category</h5>
