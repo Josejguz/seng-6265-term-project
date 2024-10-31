@@ -110,13 +110,15 @@ def delete_income():
         data = request.form
         budget_name = data['budget_name']
         income_source = data['income_source']
+        income_amount = float(data['income_amount'])
         budget = Budget.load_budget(db, session['username'], budget_name)
         if budget:
-            budget.remove_income(income_source)
+            budget.remove_income(income_source, income_amount)
             budget.save_budget(db, session['username'])
             return redirect(url_for('dashboard'))
         return "Budget not found", 404
     return "Unauthorized", 401
+
 
 @app.route('/delete_expense', methods=['POST'])
 def delete_expense():
