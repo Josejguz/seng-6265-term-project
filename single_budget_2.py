@@ -72,4 +72,13 @@ class Budget:
             db.budgets.insert_one({"username": username, self.name: budget_data})
         return True
 
-    
+    @staticmethod
+    def load_budget(db, username, budget_name):
+        user_budget = db.budgets.find_one({"username": username})
+        if user_budget and budget_name in user_budget:
+            budget_data = user_budget[budget_name]
+            budget = Budget(budget_data['name'])
+            budget.incomes = budget_data['incomes']
+            budget.expenses = budget_data['expenses']
+            return budget
+        return None
