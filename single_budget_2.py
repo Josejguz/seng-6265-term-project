@@ -9,7 +9,7 @@ class Budget:
     def __init__(self, name):
         
         #Initializes name of budget
-        
+
         self.name = name
 
         # Initialize empty lists for income and expenses
@@ -58,3 +58,18 @@ class Budget:
             'expenses': self.expenses
         }
         return report
+    
+    def save_budget(self, db, username):
+        user_budget = db.budgets.find_one({"username": username})
+        budget_data = {
+            "name": self.name,
+            "incomes": self.incomes,
+            "expenses": self.expenses
+        }
+        if user_budget:
+            db.budgets.update_one({"username": username}, {"$set": {self.name: budget_data}})
+        else:
+            db.budgets.insert_one({"username": username, self.name: budget_data})
+        return True
+
+    
