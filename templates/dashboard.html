@@ -5,7 +5,7 @@
 <p>Welcome, {{ username }}!</p>
 
 <h3>Create a Budget</h3>
-<form action="/create_budget" method="post">
+<form action="{{ url_for('budget.create_budget')}}" method="post">
     <label for="name">Budget Name:</label>
     <input type="text" id="name" name="name" required>
     <button type="submit">Create Budget</button>
@@ -21,7 +21,7 @@
         <p>Remaining: ${{ budget.remaining }}</p>
 
         <!-- Form to add an income -->
-        <form action="/add_income" method="post">
+        <form action="{{ url_for('budget.add_income') }}" method="post">
             <input type="hidden" name="budget_name" value="{{ budget.name }}">
             <label for="income_source">Income Source:</label>
             <input type="text" id="income_source" name="income_source" required>
@@ -31,7 +31,7 @@
         </form>
 
 	<!-- Form to add an expense with a dropdown for categories -->
-        <form action="/add_expense" method="post">
+        <form action="{{ url_for('budget.add_expense') }}" method="post">
             <input type="hidden" name="budget_name" value="{{ budget.name }}">
             <label for="category">Expense Category:</label>
             <select id="category" name="category" required>
@@ -55,7 +55,7 @@
     {% for income in budget.incomes %}
     <li>
         {{ income.source }}: ${{ income.amount }}
-        <form action="/delete_income" method="post" style="display:inline;">
+        <form action="{{ url_for('budget.delete_income') }}" method="post" style="display:inline;">
             <input type="hidden" name="budget_name" value="{{ budget.name }}">
             <input type="hidden" name="income_source" value="{{ income.source }}">
             <input type="hidden" name="income_amount" value="{{ income.amount }}">
@@ -71,7 +71,7 @@
         <ul>
             {% for expense in budget.expenses %}
             <li>{{ expense.category }}: ${{ expense.amount }}
-                <form action="/delete_expense" method="post" style="display:inline;">
+                <form action="{{ url_for('budget.delete_expense') }}" method="post" style="display:inline;">
                     <input type="hidden" name="budget_name" value="{{ budget.name }}">
                     <input type="hidden" name="expense_category" value="{{ expense.category }}">
                     <input type="hidden" name="expense_amount" value="{{ expense.amount }}">
@@ -82,7 +82,7 @@
         </ul>
 
         <!-- Form to delete the budget -->
-        <form action="/delete_budget" method="post" style="display: inline;">
+        <form action="{{ url_for('budget.delete_budget') }}" method="post" style="display: inline;">
             <input type="hidden" name="budget_name" value="{{ budget.name }}">
             <button type="submit" class="delete">Delete Budget</button>
         </form>
