@@ -1,4 +1,4 @@
-from seng-6265-term-project import create_app
+from seng_6265_term_project import create_app
 
 app, db = create_app('development')
 

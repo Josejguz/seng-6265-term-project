@@ -69,7 +69,7 @@ def add_expense():
         if budget:
             budget.add_expense(category, amount)
             budget.save_budget(db, session['username'])
-            return redirect(url_for('dashboard'))
+            return redirect(url_for('budget.dashboard'))
         return "Budget not found", 404
     return "Unauthorized", 401
 
@@ -84,7 +84,7 @@ def delete_income():
         if budget:
             budget.remove_income(income_source, income_amount)
             budget.save_budget(db, session['username'])
-            return redirect(url_for('dashboard'))
+            return redirect(url_for('budget.dashboard'))
         return "Budget not found", 404
     return "Unauthorized", 401
 
@@ -99,7 +99,7 @@ def delete_expense():
         if budget:
             budget.remove_expense(expense_category, expense_amount)
             budget.save_budget(db, session['username'])
-            return redirect(url_for('dashboard'))
+            return redirect(url_for('budget.dashboard'))
         return "Budget not found", 404
     return "Unauthorized", 401
 
@@ -108,5 +108,5 @@ def delete_budget():
     if 'username' in session:
         budget_name = request.form['budget_name']
         db.budgets.update_one({"username": session['username']}, {"$unset": {budget_name: 1}})
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('budget.dashboard'))
     return "Unauthorized", 401
