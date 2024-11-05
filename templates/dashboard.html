@@ -20,6 +20,11 @@
         <p>Total Expenses: ${{ budget.total_expenses }}</p>
         <p>Remaining: ${{ budget.remaining }}</p>
 
+        <!-- Button to generate report --> 
+         <form action="{{ url_for('budget.generate_report', budget_name=budget.name) }}" method="get" style="display:inline;"> 
+            <button type="submit" class="generate-report">Generate Report</button> 
+        </form>
+
         <!-- Form to add an income -->
         <form action="{{ url_for('budget.add_income') }}" method="post">
             <input type="hidden" name="budget_name" value="{{ budget.name }}">

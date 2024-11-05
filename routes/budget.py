@@ -33,6 +33,16 @@ def dashboard():
         return render_template('dashboard.html', username=session['username'], budgets=budgets)
     return redirect(url_for('auth.login'))
 
+@budget_bp.route('/generate_report/<budget_name>', methods=['GET']) 
+def generate_report(budget_name): 
+    if 'username' in session: 
+        budget = Budget.load_budget(db, session['username'], budget_name) 
+        if budget: 
+            report = budget.generate_report() 
+            return render_template('report.html', report=report) 
+        return "Budget not found", 404 
+    return "Unauthorized", 401
+
 @budget_bp.route('/create_budget', methods=['POST'])
 def create_budget():
     if 'username' in session:
