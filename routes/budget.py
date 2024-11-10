@@ -1,8 +1,9 @@
-from flask import Blueprint, request, session, redirect, url_for, render_template
+from flask import Blueprint, request, session, redirect, url_for, render_template, current_app
 from models.budget import Budget
 from pymongo import MongoClient
 from dotenv import load_dotenv
 import os
+
 
 load_dotenv()
 
@@ -36,6 +37,7 @@ def dashboard():
 @budget_bp.route('/generate_report/<budget_name>', methods=['GET']) 
 def generate_report(budget_name): 
     if 'username' in session: 
+        db = current_app.db
         budget = Budget.load_budget(db, session['username'], budget_name) 
         if budget: 
             report = budget.generate_report() 

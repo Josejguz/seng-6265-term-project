@@ -1,26 +1,24 @@
 from flask import Flask
 from pymongo import MongoClient
 from dotenv import load_dotenv
+from config import config
 import os
 
 def create_app(config_name=None):
 
     load_dotenv()
+
     app = Flask(__name__)
     
     #Load Configuration
-    if config_name == 'development':
-        app.config.from_object('config.DevelopmentConfig')
-    elif config_name == 'testing':
-        app.config.from_object('config.TestingConfig')
-    elif config_name == 'production':
-        app.config.from_object('config.ProductionConfig')
+    app.config.from_object(config[config_name])
 
     app.secret_key = app.config['SECRET_KEY']
 
     # Initialize MongoDB connection
     client = MongoClient(app.config['MONGO_URI'])
-    db = client.budget_app
+    db = client.get_default_database()
+    app.db = db
 
     # Register blueprints
     from .routes import register_blueprints
