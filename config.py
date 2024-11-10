@@ -17,3 +17,10 @@ class TestingConfig(Config):
 class ProductionConfig(Config):
     DEBUG = False
     MONGO_URI = os.getenv('MONGO_URI', 'mongodb://localhost:27017/budget_app')
+
+config = {
+    'development': DevelopmentConfig, 
+    'testing': TestingConfig, 
+    'production': ProductionConfig,
+    'default': DevelopmentConfig
+}
