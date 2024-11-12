@@ -20,7 +20,12 @@ class Budget:
     def add_income(self, source, amount):
        
         # Adds income source and amount to the income list.
-      
+        if not source:
+            raise ValueError("Income source must be provided.")
+        if amount is None:
+            raise ValueError("Amount cannot be empty.")
+        if not isinstance(amount, (int, float)):
+            raise TypeError("Amount must be a number.")
         if amount > 0:
             self.incomes.append({'source': source, 'amount': amount})
             print(f"Income of {amount} from {source} added.")
@@ -31,7 +36,7 @@ class Budget:
        
         # Adds an expense description and amount to the expenses list.
              
-        if amount > 0:
+        if amount > 0 or amount is not None:
             self.expenses.append({'category': category, 'amount': amount})
             print(f"Expense of {amount} for {category} added.")
         else:
