@@ -1,5 +1,4 @@
 import unittest
-from seng_6265_term_project import create_app
 from models.budget import Budget
 
 class TestAddIncome(unittest.TestCase):

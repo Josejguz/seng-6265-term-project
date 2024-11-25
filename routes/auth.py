@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template, redirect, url_for, session
+from flask import Blueprint, request, render_template, redirect, url_for, session, current_app
 from models.user import User
 from pymongo import MongoClient
 from dotenv import load_dotenv
@@ -18,6 +18,7 @@ def register():
         username = data['username']
         password = data['password']
         user = User(username, password)
+        db = current_app.db
         if user.save_user(db):
             return redirect(url_for('auth.login'))
         return "User already exists", 400
@@ -30,6 +31,7 @@ def login():
         username = data['username']
         password = data['password']
         user = User(username, password)
+        db = current_app.db
         if user.verify_user(db):
             session['username'] = username
             return redirect(url_for('budget.dashboard'))

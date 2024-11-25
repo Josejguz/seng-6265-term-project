@@ -20,16 +20,22 @@ def dashboard():
         for budget in user_budgets:
             for key, value in budget.items():
                 if key != "_id" and key != "username":
-                    total_income = sum([income['amount'] for income in value.get('incomes', [])])
-                    total_expenses = sum([expense['amount'] for expense in value.get('expenses', [])])
-                    remaining = total_income - total_expenses
+                    budget = Budget(key)
+
+                    budget.incomes = value.get('incomes', [])
+                    budget.expenses = value.get('expenses', [])
+
+                    total_income = budget.calculate_total_income()
+                    total_expenses = budget.calculate_total_expenses()
+                    remaining = budget.calculate_savings()
+                    
                     budgets.append({
                         "name": key,
                         "total_income": total_income,
                         "total_expenses": total_expenses,
                         "remaining": remaining,
-                        "incomes": value.get('incomes', []),
-                        "expenses": value.get('expenses', [])
+                        "incomes": budget.incomes,
+                        "expenses": budget.expenses
                     })
         return render_template('dashboard.html', username=session['username'], budgets=budgets)
     return redirect(url_for('auth.login'))

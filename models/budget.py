@@ -55,12 +55,18 @@ class Budget:
                 self.expenses.remove(expense)
                 print(f"Expense of {amount} for {category} removed.")
 
+    def calculate_total_income(self):
+        return sum([income['amount'] for income in self.incomes])
+    
+    def calculate_total_expenses(self):
+        return sum([expense['amount'] for expense in self.expenses])
+
     def calculate_savings(self):
         
        # Calculates total savings by subtracting total expenses from total income.
                
-        total_income = sum([income['amount'] for income in self.incomes])
-        total_expenses = sum([expense['amount'] for expense in self.expenses])
+        total_income = self.calculate_total_income()
+        total_expenses = self.calculate_total_expenses()
         savings = total_income - total_expenses
         return savings
     
@@ -69,8 +75,8 @@ class Budget:
         # Generates a report with the budget name, total income, total expenses, savings, income list, and expenses list.
         report = {
             'budget_name': self.name,
-            'total_income': sum([income['amount'] for income in self.incomes]),
-            'total_expenses': sum([expense['amount'] for expense in self.expenses]),
+            'total_income': self.calculate_total_income(),
+            'total_expenses': self.calculate_total_expenses(),
             'savings': self.calculate_savings(),
             'incomes': self.incomes,
             'expenses': self.expenses
