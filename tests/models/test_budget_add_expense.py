@@ -8,10 +8,10 @@ class TestAddExpense(unittest.TestCase):
 
     def testAddExpense(self):
         self.budget.addExpense('Utilities', 150)
-        self.assertEqual(self.budget.expenses, [{'source': 'Job', 'amount': 1000}])
+        self.assertEqual(self.budget.expenses, [{'category': 'Utilities', 'amount': 150}])
 
-    def test_add_income_zero_amount(self):
-        self.budget.add_income('Job', 0)
+    def testAddExpenseZero(self):
+        self.budget.add_income('Food', 0)
         self.assertEqual(self.budget.incomes, [])
 
     def test_add_income_negative_amount(self):
