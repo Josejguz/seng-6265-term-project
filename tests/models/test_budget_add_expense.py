@@ -7,45 +7,16 @@ class TestAddExpense(unittest.TestCase):
         self.budget = Budget("test_budget")
 
     def testAddExpense(self):
-        self.budget.addExpense('Utilities', 150)
+        self.budget.add_expense('Utilities', 150)
         self.assertEqual(self.budget.expenses, [{'category': 'Utilities', 'amount': 150}])
 
     def testAddExpenseZero(self):
-        self.budget.add_income('Food', 0)
-        self.assertEqual(self.budget.incomes, [])
+        self.budget.add_expense('Food', 0)
+        self.assertEqual(self.budget.expenses, [])
 
-    def test_add_income_negative_amount(self):
-        self.budget.add_income("Gift", -500)
-        self.assertEqual(self.budget.incomes, [])
-
-    def test_add_multiple_incomes(self):
-        self.budget.add_income('Job', 1000)
-        self.budget.add_income('Freelance', 500)
-        self.assertEqual(self.budget.incomes, [{'source': 'Job', 'amount': 1000}, {'source': 'Freelance', 'amount': 500}])
-
-    def test_add_income_larget_amount(self):
-        self.budget.add_income('Investment', 1_000_000_000)
-        self.assertEqual(self.budget.incomes, [{'source': 'Investment', 'amount': 1_000_000_000}])
-
-    def test_add_income_float_amount(self):
-        self.budget.add_income('Tips', 0.01)
-        self.assertEqual(self.budget.incomes, [{'source': 'Tips', 'amount': 0.01}])
-
-    def test_add_income_empty_amount(self):
-        with self.assertRaises(ValueError):
-            self.budget.add_income('Job', '')
-
-    def test_add_income_empty_source(self):
-        with self.assertRaises(ValueError):
-            self.budget.add_income('', 200)
-
-    def test_add_income_empty_amount(self):
-        with self.assertRaises(ValueError):
-            self.budget.add_income('Job', None)
-
-    def test_add_income_string_amount(self):
-        with self.assertRaises(TypeError):
-            self.budget.add_income('Job', 'Pancakes')
+    def testAddExpenseZero(self):
+        self.budget.add_expense('Gas', -50)
+        self.assertEqual(self.budget.expenses, [])
             
 if __name__ == '__main__':
     unittest.main() 
