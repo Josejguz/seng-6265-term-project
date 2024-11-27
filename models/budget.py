@@ -35,8 +35,13 @@ class Budget:
     def add_expense(self, category, amount):
        
         # Adds an expense description and amount to the expenses list.
-             
-        if amount > 0 or amount is not None:
+        if not category:
+            raise ValueError("Expense category must be provided.")
+        if amount is None:
+            raise ValueError("Amount cannot be empty.")
+        if not isinstance(amount, (int, float)):
+            raise TypeError("Amount must be a number.")
+        if amount > 0:
             self.expenses.append({'category': category, 'amount': amount})
             print(f"Expense of {amount} for {category} added.")
         else:

@@ -21,21 +21,22 @@ class TestRegistrationEndpoints(unittest.TestCase):
         with self.app.app_context():
             
             self.db = self.db.client['budget_app_test']
+            self.db.users.insert_one({'username': 'test_user', 'password': 'testpass'})
 
     def test_login_authenticated(self):
-
-        self.db.users.insert_one({'username': 'test_user', 'password': 'testpass'})
+       
         response = self.client.post('/auth/login', data=dict(username='test_user', password='testpass'))
         self.assertEqual(response.status_code, 302)
-        self.db.users.delete_one({'username': 'test_user', 'password': 'testpass'})
+        
 
     def test_login_unauthorized(self):
 
-        response = self.client.post('/auth/login', data=dict(username='test_user', password='testpass'))
+        response = self.client.post('/auth/login', data=dict(username='test_user', password='wrongpass'))
         self.assertEqual(response.status_code, 401)
         self.assertIn(b'Invalid credentials', response.data)
 
     def tearDown(self):
         with self.app.app_context():
+            self.db.users.delete_one({'username': 'test_user', 'password': 'testpass'})
             self.db.client.drop_database('budget_app_test')
             self.db.client.close()
