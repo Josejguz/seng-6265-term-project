@@ -1,5 +1,5 @@
 from flask import Blueprint, request, session, redirect, url_for, render_template, current_app
-from models.budget import Budget
+from ..models.budget import Budget
 from pymongo import MongoClient
 from dotenv import load_dotenv
 import os

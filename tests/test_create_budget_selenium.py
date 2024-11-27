@@ -9,12 +9,15 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from webdriver_manager.chrome import ChromeDriverManager
 
 class TestCreateBudget(unittest.TestCase):
 
     def setUp(self):
-        # Initialize WebDriver
-        self.driver = webdriver.Chrome()  
+        options = webdriver.ChromeOptions()
+        driver_path = ChromeDriverManager().install() 
+        service = webdriver.chrome.service.Service(driver_path)
+        self.driver = webdriver.Chrome(service=service, options=options)  # Adjust if using a different browser
         self.driver.get("http://127.0.0.1:5000/")
         self.driver.set_window_size(1247, 732)
 

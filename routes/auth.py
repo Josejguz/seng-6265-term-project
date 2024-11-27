@@ -1,5 +1,5 @@
 from flask import Blueprint, request, render_template, redirect, url_for, session, current_app
-from models.user import User
+from ..models.user import User
 from pymongo import MongoClient
 from dotenv import load_dotenv
 import os
