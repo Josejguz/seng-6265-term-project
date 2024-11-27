@@ -1,4 +1,4 @@
-import unittest
+gimport unittest
 from models.budget import Budget
 
 class TestAddExpense(unittest.TestCase):
@@ -14,7 +14,7 @@ class TestAddExpense(unittest.TestCase):
         self.budget.add_expense('Food', 0)
         self.assertEqual(self.budget.expenses, [])
 
-    def testAddExpenseZero(self):
+    def testAddExpenseNegative(self):
         self.budget.add_expense('Gas', -50)
         self.assertEqual(self.budget.expenses, [])
             
