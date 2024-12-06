@@ -41,9 +41,8 @@ jobs:
           FLASK_CONFIG: testing
           MONGO_URI: ${{ secrets.MONGO_URI }}
         run: |
-          start /B flask run
-          timeout /t 10
-          python run_tests.py -v
+          powershell Start-Process -NoNewWindow -FilePath "python" -ArgumentList "run_tests.py -v" -Wait
 
       - name: Print environment variables
         run: printenv
+
