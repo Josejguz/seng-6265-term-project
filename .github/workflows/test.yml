@@ -38,7 +38,9 @@ jobs:
 
       - name: Print environment variables
         shell: powershell
-        run: Get-ChildItem Env:
+        run: |
+          Write-Output "Printing environment variables"
+          gci env:
 
       - name: Start Flask app and run tests
         shell: powershell
