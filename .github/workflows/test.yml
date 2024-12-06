@@ -30,18 +30,23 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Set up MongoDB for Linux
-        if: runner.os == 'Linux'
-        services:
-          mongo:
-            image: mongo:latest
-            ports:
-              - 27017:27017
+      - name: Install Docker on macOS
+        if: runner.os == 'macOS'
+        run: |
+          brew install --cask docker
+          open /Applications/Docker.app
+          sleep 30
+          docker --version
 
-      - name: Set up environment variables for macOS and Windows
+      - name: Start MongoDB for Linux
+        if: runner.os == 'Linux'
+        run: |
+          docker run -d -p 27017:27017 --name mongodb mongo:latest
+          sleep 15
+
+      - name: Set environment variables for macOS and Windows
         if: runner.os != 'Linux'
-        env:
-          MONGO_URI: "your-mongodb-connection-string"
+        run: echo "MONGO_URI=your-mongodb-connection-string" >> $GITHUB_ENV
 
       - name: Run regression tests on Linux
         if: runner.os == 'Linux'
@@ -68,3 +73,4 @@ jobs:
 
       - name: Print environment variables
         run: printenv
+
