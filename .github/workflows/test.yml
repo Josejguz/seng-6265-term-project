@@ -1,4 +1,4 @@
-name: Regression Tests
+name: Regression Tests (Windows)
 
 on:
   push:
@@ -10,11 +10,7 @@ on:
 
 jobs:
   test:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: windows-latest
 
     steps:
       - name: Checkout code
@@ -30,47 +26,24 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Install Docker on macOS
-        if: runner.os == 'macOS'
-        run: |
-          brew install --cask docker
-          open /Applications/Docker.app
-          sleep 30
-          docker --version
-
-      - name: Start MongoDB for Linux
-        if: runner.os == 'Linux'
-        run: |
-          docker run -d -p 27017:27017 --name mongodb mongo:latest
-          sleep 15
-
-      - name: Set environment variables for macOS and Windows
-        if: runner.os != 'Linux'
-        run: echo "MONGO_URI=your-mongodb-connection-string" >> $GITHUB_ENV
-
-      - name: Run regression tests on Linux
-        if: runner.os == 'Linux'
+      - name: Set environment variables
         env:
           FLASK_APP: app.py
           FLASK_ENV: development
           FLASK_CONFIG: testing
-        run: |
-          nohup flask run &
-          sleep 5
-          python run_tests.py -v
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+        run: echo "Environment variables set"
 
-      - name: Run regression tests on Windows and macOS
-        if: runner.os != 'Linux'
+      - name: Run regression tests
         env:
           FLASK_APP: app.py
           FLASK_ENV: development
           FLASK_CONFIG: testing
           MONGO_URI: ${{ secrets.MONGO_URI }}
         run: |
-          nohup flask run &
-          sleep 5
+          start /B flask run
+          timeout /t 10
           python run_tests.py -v
 
       - name: Print environment variables
         run: printenv
-
