@@ -1,4 +1,4 @@
-name: Run Tests
+name: Regression Tests
 
 on:
   push:
@@ -10,7 +10,11 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
     services:
       mongo:
@@ -32,7 +36,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run tests
+      - name: Run regression tests on Linux
+        if: runner.os == 'Linux'
         env:
           FLASK_APP: app.py
           FLASK_ENV: development
@@ -40,4 +45,30 @@ jobs:
         run: |
           nohup flask run &
           sleep 5
-          python run_tests.py
+          python run_tests.py -v
+
+      - name: Run regression tests on Windows
+        if: runner.os == 'Windows'
+        env:
+          FLASK_APP: app.py
+          FLASK_ENV: development
+          FLASK_CONFIG: testing
+        run: |
+          start /B flask run
+          timeout /t 5
+          python run_tests.py -v
+
+      - name: Run regression tests on macOS
+        if: runner.os == 'macOS'
+        env:
+          FLASK_APP: app.py
+          FLASK_ENV: development
+          FLASK_CONFIG: testing
+        run: |
+          nohup flask run &
+          sleep 5
+          python run_tests.py -v
+
+      - name: Print environment variables
+        run: printenv
+
