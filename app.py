@@ -1,3 +1,9 @@
+import os
+import sys
+
+project_root = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(project_root)
+
 from seng_6265_term_project import create_app
 import os
 

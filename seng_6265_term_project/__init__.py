@@ -1,7 +1,7 @@
 from flask import Flask
 from pymongo import MongoClient
 from dotenv import load_dotenv
-from .config import config
+from config import config
 import os
 
 def create_app(config_name=None):

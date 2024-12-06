@@ -1,5 +1,5 @@
 import unittest
-from models.budget import Budget
+from seng_6265_term_project.models.budget import Budget
 
 class TestAddExpense(unittest.TestCase):
 
