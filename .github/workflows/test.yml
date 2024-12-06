@@ -40,7 +40,7 @@ jobs:
         shell: powershell
         run: |
           Write-Output "Printing environment variables"
-          gci env:
+          Get-ChildItem Env:
 
       - name: Start Flask app and run tests
         shell: powershell
@@ -51,7 +51,7 @@ jobs:
           MONGO_URI: ${{ secrets.MONGO_URI }}
         run: |
           Write-Output "Starting Flask app"
-          flask run &
+          Start-Process -NoNewWindow -FilePath "flask" -ArgumentList "run"
           Start-Sleep -Seconds 10
           Write-Output "Running tests"
           python run_tests.py -v
