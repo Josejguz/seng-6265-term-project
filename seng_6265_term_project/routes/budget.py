@@ -43,6 +43,7 @@ def dashboard():
 @budget_bp.route('/generate_report/<budget_name>', methods=['GET']) 
 def generate_report(budget_name): 
     if 'username' in session: 
+        db = current_app.db
         budget = Budget.load_budget(db, session['username'], budget_name) 
         if budget: 
             report = budget.generate_report() 

@@ -24,6 +24,22 @@ class GenerateReportTestCase(unittest.TestCase):
             
             # Initialize test database
             self.db = self.db.client['budget_app_test']
+            self.db.users.insert_one({'username': 'test_user', 'password': 'testpass'})
+            self.db.budgets.insert_one({ 
+            "username": "test_user", 
+            "test_budget": { "name": "test_budget", 
+                            "incomes": [ 
+                                {"source": "salary", "amount": 4000}, 
+                                {"source": "freelance", "amount": 1500} 
+                            ], 
+                            "expenses": [ 
+                                {"category": "Rent", "amount": 1200}, 
+                                {"category": "Utilities", "amount": 300}, 
+                                {"category": "Groceries", "amount": 500}, 
+                                {"category": "Entertainment", "amount": 200} 
+                            ] 
+                        } 
+                    })
 
 
     # Tear down the test case
@@ -38,29 +54,10 @@ class GenerateReportTestCase(unittest.TestCase):
 
     # Test generate report route for an authenticated user and verify response status and response data
     def test_generate_report_authenticated(self):
-
-        # Insert a budget into the test database
-        self.db.budgets.insert_one({ 
-            "username": "test_user", 
-            "test_budget": { "name": "test_budget", 
-                            "incomes": [ 
-                                {"source": "salary", "amount": 4000}, 
-                                {"source": "freelance", "amount": 1500} 
-                            ], 
-                            "expenses": [ 
-                                {"category": "rent", "amount": 1200}, 
-                                {"category": "utilities", "amount": 300}, 
-                                {"category": "groceries", "amount": 500}, 
-                                {"category": "entertainment", "amount": 200} 
-                            ] 
-                        } 
-                    })
-        
-        # Register a test user 
-        self.client.post('/auth/register', data=dict(username='test_user', password='testpass')) 
         
         # Log in the test user 
-        self.client.post('/auth/login', data=dict(username='test_user', password='testpass'))
+        response = self.client.post('/auth/login', data=dict(username='test_user', password='testpass'))
+        self.assertEqual(response.status_code, 302)
         
         # Get the generated report for the test budget
         response = self.client.get('/budget/generate_report/test_budget')
