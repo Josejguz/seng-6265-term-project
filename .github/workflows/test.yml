@@ -33,6 +33,8 @@ jobs:
           $env:FLASK_APP="app.py"
           $env:FLASK_ENV="development"
           $env:FLASK_CONFIG="testing"
+          $enc:MONGO_URI="mongodb://localhost:27017/budget_app_test"
+
           Write-Output "Environment variables set"
 
       - name: Print environment variables
