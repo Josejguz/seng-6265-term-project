@@ -34,15 +34,19 @@ jobs:
           MONGO_URI: ${{ secrets.MONGO_URI }}
         run: echo "Environment variables set"
 
-      - name: Run regression tests
+      - name: Start Flask app and run tests
+        shell: powershell
         env:
           FLASK_APP: app.py
           FLASK_ENV: development
           FLASK_CONFIG: testing
           MONGO_URI: ${{ secrets.MONGO_URI }}
         run: |
-          powershell Start-Process -NoNewWindow -FilePath "python" -ArgumentList "run_tests.py -v" -Wait
+          Start-Process -NoNewWindow -FilePath "flask" -ArgumentList "run" -PassThru | Out-Null
+          Start-Sleep -Seconds 10
+          python run_tests.py -v
 
       - name: Print environment variables
         run: printenv
+
 
