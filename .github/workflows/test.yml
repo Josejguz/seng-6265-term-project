@@ -26,13 +26,19 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Set environment variables
-        env:
-          FLASK_APP: app.py
-          FLASK_ENV: development
-          FLASK_CONFIG: testing
-          MONGO_URI: ${{ secrets.MONGO_URI }}
-        run: echo "Environment variables set"
+      - name: Set and verify environment variables
+        shell: powershell
+        run: |
+          Write-Output "Setting environment variables"
+          $env:FLASK_APP="app.py"
+          $env:FLASK_ENV="development"
+          $env:FLASK_CONFIG="testing"
+          $env:MONGO_URI="${{ secrets.MONGO_URI }}"
+          Write-Output "Environment variables set"
+
+      - name: Print environment variables
+        shell: powershell
+        run: Get-ChildItem Env:
 
       - name: Start Flask app and run tests
         shell: powershell
@@ -42,11 +48,11 @@ jobs:
           FLASK_CONFIG: testing
           MONGO_URI: ${{ secrets.MONGO_URI }}
         run: |
-          Start-Process -NoNewWindow -FilePath "flask" -ArgumentList "run" -PassThru | Out-Null
+          Write-Output "Starting Flask app"
+          flask run &
           Start-Sleep -Seconds 10
+          Write-Output "Running tests"
           python run_tests.py -v
 
-      - name: Print environment variables
-        run: printenv
 
 
