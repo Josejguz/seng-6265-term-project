@@ -1,22 +1,16 @@
-name: Run Tests
+name: Regression Tests (Windows)
 
 on:
   push:
     branches:
-      - main  # Adjust this to the branch you want to trigger the tests on
+      - main
   pull_request:
     branches:
       - main
 
 jobs:
   test:
-    runs-on: ubuntu-latest
-
-    services:
-      mongo:
-        image: mongo:latest
-        ports:
-          - 27017:27017
+    runs-on: windows-latest
 
     steps:
       - name: Checkout code
@@ -25,19 +19,40 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.8  # Specify the Python version you need
+          python-version: 3.8
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run tests
+      - name: Set and verify environment variables
+        shell: powershell
+        run: |
+          Write-Output "Setting environment variables"
+          $env:FLASK_APP="app.py"
+          $env:FLASK_ENV="development"
+          $env:FLASK_CONFIG="testing"
+          $env:MONGO_URI="mongodb://localhost:27017/budget_app_test"
+
+          Write-Output "Environment variables set"
+
+      - name: Print environment variables
+        shell: powershell
+        run: |
+          Write-Output "Printing environment variables"
+          Get-ChildItem Env:
+
+      - name: Start Flask app and run tests
+        shell: powershell
         env:
           FLASK_APP: app.py
           FLASK_ENV: development
           FLASK_CONFIG: testing
+          MONGO_URI: ${{ secrets.MONGO_URI }}
         run: |
-          nohup flask run &
-          sleep 5
-          python run_tests.py
+          Write-Output "Starting Flask app"
+          Start-Process -NoNewWindow -FilePath "flask" -ArgumentList "run"
+          Start-Sleep -Seconds 10
+          Write-Output "Running tests"
+          python run_tests.py -v
