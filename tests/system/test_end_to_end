@@ -33,8 +33,8 @@ class TestCreateBudget(unittest.TestCase):
 
         # Verify Log in
         driver.find_element(By.LINK_TEXT, "Login").click()
-        driver.find_element(By.ID, "username").send_keys(self.unique_username)
-        driver.find_element(By.ID, "password").send_keys("Anthony")
+        driver.find_element(By.ID, "username").send_keys("darius")
+        driver.find_element(By.ID, "password").send_keys(12345)
         driver.find_element(By.CSS_SELECTOR, "button").click()
 
         # Wait for dashboard and create budget form
@@ -56,6 +56,8 @@ class TestCreateBudget(unittest.TestCase):
             budget_list_item.is_displayed(),
             "Newly created budget 'Testing_Budget' not found in the list."
         )
+
+        
 
     def tearDown(self):
         self.db.users.delete_one({'username': self.unique_username})
