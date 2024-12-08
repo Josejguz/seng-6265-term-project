@@ -78,14 +78,12 @@ class TestCreateBudget(unittest.TestCase):
         This is the first failing part of your program. If you encounter similar issues after fixing this in other parts of your 
         program, you will need to fix your locators for your other elements as well. 
         '''
-        myElement = driver.find_element(By.NAME, "dropdown")
-        dropdown = Select(myElement)
-        dropdown.selectByVisibleText("Rent")
+        driver.findElement(By.xpath("//input[@id='usernamereg-phone']")).sendKeys("123456789"); //xpath
 
         driver.find_element(By.ID, "amount").send_keys(500)
         driver.find_element(By.CSS_SELECTOR, "button").click()
 
-        dropdown.selectByVisibleText("Utilities")
+        expenseBox.selectByVisibleText("Utilities")
         driver.find_element(By.ID, "amount").send_keys(100)
         driver.find_element(By.CSS_SELECTOR, "button").click()
 
