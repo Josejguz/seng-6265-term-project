@@ -10,7 +10,7 @@ sys.path.append(project_root)
 cov = coverage.Coverage()
 cov.start()
 
-def run_tests():
+def run_tests_system():
     # Create a Flask app with the testing configuration
     app, db = create_app('testing')
     
@@ -22,7 +22,7 @@ def run_tests():
         unittest.TextTestRunner(verbosity=2).run(tests)
 
 if __name__ == "__main__":
-    run_tests()
+    run_tests_system()
 
     cov.stop()
     cov.save()
