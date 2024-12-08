@@ -63,10 +63,10 @@ class TestCreateBudget(unittest.TestCase):
         driver.find_element(By.CSS_SELECTOR, "button").click()
 
         #Add expense
-        WebElement myElement = driver.findElement(By.name("dropdown"))
+        WebElement myElement = driver.findElement(By.NAME, "dropdown"))
         Select dropdown = new Select(myElement)
-        
         dropdown.selectByVisibleText("Rent")
+
         driver.find_element(By.ID, "amount").send_keys(500)
         driver.find_element(By.CSS_SELECTOR, "button").click()
 
