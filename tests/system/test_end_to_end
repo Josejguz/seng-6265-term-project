@@ -57,6 +57,8 @@ class TestCreateBudget(unittest.TestCase):
             "Newly created budget 'Testing_Budget' not found in the list."
         )
 
+        # Verify add income
+        driver.find_element(By.ID, "income_source").send_keys("Job")
         
 
     def tearDown(self):
