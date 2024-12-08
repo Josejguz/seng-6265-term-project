@@ -72,23 +72,34 @@ class TestCreateBudget(unittest.TestCase):
         driver.find_element(By.ID, "income_amount").send_keys(2000)
         driver.find_element(By.CSS_SELECTOR, "button").click()
 
+        #Verify if income is displayed
+        element = driver.find_element_by_name("Salesman")
+        self.assertTrue(element.is_displayed(), "Salesman income not found.")
+           
         #Add expense
         '''
         myElement is not being found. You should use the correct locator to find the dropdown element. Instead of using name, you can try using something like the XPATH.
         This is the first failing part of your program. If you encounter similar issues after fixing this in other parts of your 
         program, you will need to fix your locators for your other elements as well. 
         '''
-        driver.findElement(By.xpath("//input[@name='budget_name']")).sendKeys("Rent"); //input type="hidden" name="budget_name" value="{{ budget.name }}"
+        driver.findElement(By.xpath("//input[@name='budget_name']")).sendKeys("Rent") //input type="hidden" name="budget_name" value="{{ budget.name }}"
         driver.find_element(By.ID, "amount").send_keys(500)
         driver.find_element(By.CSS_SELECTOR, "button").click()
 
-        driver.findElement(By.xpath("//input[@name='budget_name']")).sendKeys("Utilities"); //input type="hidden" name="budget_name" value="{{ budget.name }}"
+        driver.findElement(By.xpath("//input[@name='budget_name']")).sendKeys("Utilities") //input type="hidden" name="budget_name" value="{{ budget.name }}"
         driver.find_element(By.ID, "amount").send_keys(100)
         driver.find_element(By.CSS_SELECTOR, "button").click()
+
+        #Verify if expenses are displayed
+        element = driver.find_element_by_name("Utilities")
+        self.assertTrue(element.is_displayed(), "Utilities expense not found.")
 
         '''
         Before you start deleting incomes and expenses, try generating a report.
         '''
+        #Generate Report
+        driver.findElement(By.xpath("//input[@class='generate-report']")).click()
+        
         #Delete income
         driver.find_element(By.CLASS, "delete").click()
 
